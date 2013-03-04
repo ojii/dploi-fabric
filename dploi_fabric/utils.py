@@ -55,8 +55,8 @@ class Configuration(object):
 
         },
         'nginx': {
-            'client_max_body_size': '10m'
-        }
+            'client_max_body_size': '10m',
+        },
     }
     def load_sites(self, config_file_content=None, env_dict=None):
         """
@@ -261,8 +261,8 @@ class Configuration(object):
             'generated_settings_path': posixpath.join(env_dict.get("path"), "_gen/settings.py"),
 
             # New settings
-            'domains_redirect': env_dict.get('domains_redirect'),
-            'url_redirect': env_dict.get('url_redirect'),
+            'domains_redirect': env_dict.get('domains_redirect', []),
+            'url_redirect': env_dict.get('url_redirect', []),
 
             'basic_auth': env_dict.get('basic_auth', False),
             'basic_auth_path': os.path.join(env_dict.get("path"), env_dict.get('basic_auth_path', None) or ""),
@@ -274,6 +274,7 @@ class Configuration(object):
             'static_error_pages': env_dict.get('static_error_pages', []),
             'big_body_endpoints': env_dict.get('big_body_endpoints', []),
             'home': '/home/%s' %  env_dict.get("user"),
+            'postprocess_nginx_conf': env_dict.get('postprocess_nginx_conf', lambda conf: None),
         }
 
         if not env_dict.get("databases"):
